@@ -19,10 +19,32 @@ class Pen(turtle.Turtle):
 levels = ['']
 
 #Define first level - screen is blocks across and 20 blocks down. We can create levels by changing the text. X is wall (can use any character), space is hollow. 
-level_1 = []
+level_1 = [
 "XXXXXXXXXXXXXXXXXXXXXXXXX",
 "X  XXXXXXX          XXXXX",
-"X  XXXXXXX"
+"X  XXXXXXX  XXXXXX  XXXXX",
+"X       XX  XXXXXX  XXXXX",
+"X       XX  XXX        XX",
+"XXXXXX  XX  XXX        XX",
+"XXXXXX  XX  XXXXXX  XXXXX",
+"XXXXXX  XX    XXXX  XXXXX",
+"X  XXX        XXXX  XXXXX",
+"X  XXX  XXXXXXXXXXXXXXXXX",
+"X         XXXXXXXXXXXXXXX",
+"X                XXXXXXXX", 
+"XXXXXXXXXXX      XXXXX  X",
+"XXXXXXXXXXXXXX   XXXXX  X",
+"XXX  XXXXXXXXX          X",
+"XXX                     X",
+"XXX            XXXXXXXXXX",
+"XXXXXXXXXX     XXXXXXXXXX",
+"XXXXXXXXXX              X",
+"XX   XXXXXXXXXXXX   XXXXX",
+"XX    XXXXXXXXXXX  XXXXXX",
+"XX          XXX         X",
+"XXXXXXXXXXXXXXXXXXXXXXXXX"
+]
+
 
     
 
