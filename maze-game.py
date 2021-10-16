@@ -20,7 +20,7 @@ levels = ['']
 
 #Define first level - screen is 25 columns and 25 rows of blocks (x and y coordinates). We can create levels by changing the text. X is wall (can use any character), space is for movement through maze. 
 level_1 = [
-"XXXXXXXXXXXXXXXXXXXXXXXXX",
+"X  XXXXXXXXXXXXXXXXXXXXXX",
 "X  XXXXXXX          XXXXX",
 "X  XXXXXXX  XXXXXX  XXXXX",
 "X       XX  XXXXXX  XXXXX",
@@ -51,7 +51,7 @@ level_1 = [
 levels.append(level_1)
     
 #Create level set up FUNCTION - starts at first row, column (-288, 288). Then theres a nested loop. (each block is 24 wide)
-sef setup_maze(level):
+def setup_maze(level):
     for y in range(len(level)):
         for x in range(len(level[y])):
             #Get the character at each x,y coordinate
@@ -65,4 +65,17 @@ sef setup_maze(level):
             if character == "X":
                 pen.goto(screen_x, screen_y) #x, y, coordinates on the screen
                 pen.stamp() #stamp the screen with a block/wall
+
+#Create class instances 
+pen = Pen()
+
+#Invoke the function
+setup_maze(levels[1])
+
+while True:
+    #pass
+    wn.update()
+
+
+
 
