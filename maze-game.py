@@ -18,7 +18,7 @@ class Pen(turtle.Turtle):
 #Create levels list - because we need to give the pen a place to go. Created a LIST called levels. 
 levels = ['']
 
-#Define first level - screen is blocks across and 20 blocks down. We can create levels by changing the text. X is wall (can use any character), space is hollow. 
+#Define first level - screen is 25 columns and 25 rows of blocks (x and y coordinates). We can create levels by changing the text. X is wall (can use any character), space is for movement through maze. 
 level_1 = [
 "XXXXXXXXXXXXXXXXXXXXXXXXX",
 "X  XXXXXXX          XXXXX",
@@ -37,16 +37,32 @@ level_1 = [
 "XXX  XXXXXXXXX          X",
 "XXX                     X",
 "XXX            XXXXXXXXXX",
-"XXXXXXXXXX     XXXXXXXXXX",
-"XXXXXXXXXX              X",
-"XX   XXXXXXXXXXXX   XXXXX",
-"XX    XXXXXXXXXXX  XXXXXX",
-"XX          XXX         X",
+"XXXXXXXXXXX    XXXXXXXXXX",
+"XXXXXXXXXXX             X",
+"XX    XXXXX             X",
+"XX    XXXXXXXXXXX   XXXXX",
+"XX     XXXXXXXXXX   XXXXX",
+"XX          XXXX        X",
+"XXXX                    X",
 "XXXXXXXXXXXXXXXXXXXXXXXXX"
 ]
 
-
+#Append (add) maze to mazes list
+levels.append(level_1)
     
-
-
+#Create level set up FUNCTION - starts at first row, column (-288, 288). Then theres a nested loop. (each block is 24 wide)
+sef setup_maze(level):
+    for y in range(len(level)):
+        for x in range(len(level[y])):
+            #Get the character at each x,y coordinate
+            #NOTE the order of y and x in the next line
+            character = level[y][x]
+            #Calculate the screen x, y coordinates
+            screen_x = -288 + (x * 24)
+            screen_y = 288 - (y * 24)
+            
+            #Check if it is an X (representing a wall)
+            if character == "X":
+                pen.goto(screen_x, screen_y) #x, y, coordinates on the screen
+                pen.stamp() #stamp the screen with a block/wall
 
