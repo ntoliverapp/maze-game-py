@@ -25,7 +25,7 @@ class Player(turtle.Turtle): #the player is a child of the turtle modules turtle
         self.speed(0)
     def go_up(self): #Create player movement, adding it to player class. 
         #Calculate the next spot to move to
-        move_to_x = player,xcor()
+        move_to_x = player.xcor()
         move_to_y = player.ycor() + 24
         
         #Check if the space has a wall
@@ -33,28 +33,29 @@ class Player(turtle.Turtle): #the player is a child of the turtle modules turtle
             self.goto(move_to_x, move_to_y)
             
     def go_down(self): 
-        move_to_x = player,xcor()
+        move_to_x = player.xcor()
         move_to_y = player.ycor() - 24
         if (move_to_x, move_to_y) not in walls:
             self.goto(move_to_x, move_to_y)
     def go_left(self): 
-        move_to_x = player,xcor() + 24
+        move_to_x = player.xcor() - 24
         move_to_y = player.ycor()
         if (move_to_x, move_to_y) not in walls:
             self.goto(move_to_x, move_to_y)
     def go_right(self): 
-        move_to_x = player,xcor() - 24
+        move_to_x = player.xcor() + 24
         move_to_y = player.ycor()
         if (move_to_x, move_to_y) not in walls:
             self.goto(move_to_x, move_to_y)
+        
         
 #Create levels list - because we need to give the pen a place to go. Created a LIST called levels. 
 levels = ['']
 
 #Define first level - screen is 25 columns and 25 rows of blocks (x and y coordinates). We can create levels by changing the text. X is wall (can use any character), space is for movement through maze. 
 level_1 = [
-"XP XXXXXXXXXXXXXXXXXXXXXX",
-"X  XXXXXXX          XXXXX",
+"XXXXXXXXXXXXXXXXXXXXXXXXX",
+"XP XXXXXXX          XXXXX",
 "X  XXXXXXX  XXXXXX  XXXXX",
 "X       XX  XXXXXX  XXXXX",
 "X       XX  XXX        XX",
@@ -130,14 +131,5 @@ wn.tracer(0)
 while True:
     #pass
     wn.update()
-
-
-
-
-
-
-
-
-
 
 
