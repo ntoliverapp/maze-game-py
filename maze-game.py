@@ -23,7 +23,31 @@ class Player(turtle.Turtle): #the player is a child of the turtle modules turtle
         self.color('blue')
         self.penup()
         self.speed(0)
-
+    def go_up(self): #Create player movement, adding it to player class. 
+        #Calculate the next spot to move to
+        move_to_x = player,xcor()
+        move_to_y = player.ycor() + 24
+        
+        #Check if the space has a wall
+        if (move_to_x, move_to_y) not in walls:
+            self.goto(move_to_x, move_to_y)
+            
+    def go_down(self): 
+        move_to_x = player,xcor()
+        move_to_y = player.ycor() - 24
+        if (move_to_x, move_to_y) not in walls:
+            self.goto(move_to_x, move_to_y)
+    def go_left(self): 
+        move_to_x = player,xcor() + 24
+        move_to_y = player.ycor()
+        if (move_to_x, move_to_y) not in walls:
+            self.goto(move_to_x, move_to_y)
+    def go_right(self): 
+        move_to_x = player,xcor() - 24
+        move_to_y = player.ycor()
+        if (move_to_x, move_to_y) not in walls:
+            self.goto(move_to_x, move_to_y)
+        
 #Create levels list - because we need to give the pen a place to go. Created a LIST called levels. 
 levels = ['']
 
@@ -74,6 +98,8 @@ def setup_maze(level):
             if character == "X":
                 pen.goto(screen_x, screen_y) #x, y, coordinates on the screen
                 pen.stamp() #stamp the screen with a block/wall
+                #Add coordinates to the wall list
+                walls.append((screen_x, screen_y)) #double parenthesis is a tuple, append all coordinates (x and y) of every block in the walls
             #Check if it is a P (representing the player)
             if character == "P":
                 player.goto(screen_x, screen_y)
@@ -82,12 +108,31 @@ def setup_maze(level):
 pen = Pen()
 player = Player() #the player is an instance of the player class
 
+#Create wall coordinate list
+walls = []
+
 #Invoke the function
 setup_maze(levels[1])
+#print(walls)
 
+
+#Keyboard Binding:
+turtle.listen() #going to listen to the keyboard
+turtle.onkey(player.go_left, "Left") #player comes from instance name, go_left comes from player function
+turtle.onkey(player.go_right, "Right")
+turtle.onkey(player.go_up, "Up")
+turtle.onkey(player.go_down, "Down")
+
+#Turn off screen update
+wn.tracer(0)
+
+#Main Game Loop
 while True:
     #pass
     wn.update()
+
+
+
 
 
 
