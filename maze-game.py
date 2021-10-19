@@ -23,6 +23,7 @@ class Player(turtle.Turtle): #the player is a child of the turtle modules turtle
         self.color('blue')
         self.penup()
         self.speed(0)
+        self.gold = 0
     def go_up(self): #Create player movement, adding it to player class. 
         #Calculate the next spot to move to
         move_to_x = player.xcor()
@@ -48,6 +49,20 @@ class Player(turtle.Turtle): #the player is a child of the turtle modules turtle
         if (move_to_x, move_to_y) not in walls:
             self.goto(move_to_x, move_to_y)
         
+#Create Treasure class
+class Treasure(turtle.Turtle): #the player is a child of the turtle modules turtle class
+    def __init__(self, x, y):
+        turtle.Turtle.__init__(self)
+        self.shape('circle')
+        self.color('gold')
+        self.penup()
+        self.speed(0)
+        self.gold = 100
+        self.goto(x,y)
+
+    def destroy(self)
+        self.goto(2000, 2000)
+        self.hideturtle()
         
 #Create levels list - because we need to give the pen a place to go. Created a LIST called levels. 
 levels = ['']
@@ -76,10 +91,13 @@ level_1 = [
 "XX    XXXXX             X",
 "XX    XXXXXXXXXXX   XXXXX",
 "XX     XXXXXXXXXX   XXXXX",
-"XX          XXXX        X",
+"XXT         XXXX        X",
 "XXXX                    X",
 "XXXXXXXXXXXXXXXXXXXXXXXXX"
 ]
+
+#Add a treasures list #to collect treasures into the list over time#
+treasures = []
 
 #Append (add) maze to mazes list
 levels.append(level_1)
@@ -104,7 +122,10 @@ def setup_maze(level):
             #Check if it is a P (representing the player)
             if character == "P":
                 player.goto(screen_x, screen_y)
-
+            #Check if it is a T (representing the treasure)
+            if character == "T":
+                player.goto(screen_x, screen_y) #x and y coordinates in Treasure class
+                
 #Create class instances 
 pen = Pen()
 player = Player() #the player is an instance of the player class
