@@ -16,7 +16,7 @@ class Pen(turtle.Turtle):
         self.speed(0)
 
 #create Player class
-class Player(turtle.Turtle):
+class Player(turtle.Turtle): #the player is a child of the turtle modules turtle class
     def __init__(self):
         turtle.Turtle.__init__(self)
         self.shape('square')
@@ -29,7 +29,7 @@ levels = ['']
 
 #Define first level - screen is 25 columns and 25 rows of blocks (x and y coordinates). We can create levels by changing the text. X is wall (can use any character), space is for movement through maze. 
 level_1 = [
-"X  XXXXXXXXXXXXXXXXXXXXXX",
+"XP XXXXXXXXXXXXXXXXXXXXXX",
 "X  XXXXXXX          XXXXX",
 "X  XXXXXXX  XXXXXX  XXXXX",
 "X       XX  XXXXXX  XXXXX",
@@ -74,9 +74,13 @@ def setup_maze(level):
             if character == "X":
                 pen.goto(screen_x, screen_y) #x, y, coordinates on the screen
                 pen.stamp() #stamp the screen with a block/wall
+            #Check if it is a P (representing the player)
+            if character == "P":
+                player.goto(screen_x, screen_y)
 
 #Create class instances 
 pen = Pen()
+player = Player() #the player is an instance of the player class
 
 #Invoke the function
 setup_maze(levels[1])
@@ -84,6 +88,9 @@ setup_maze(levels[1])
 while True:
     #pass
     wn.update()
+
+
+
 
 
 
