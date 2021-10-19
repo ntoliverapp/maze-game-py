@@ -15,6 +15,15 @@ class Pen(turtle.Turtle):
         self.penup()
         self.speed(0)
 
+#create Player class
+class Player(turtle.Turtle):
+    def __init__(self):
+        turtle.Turtle.__init__(self)
+        self.shape('square')
+        self.color('blue')
+        self.penup()
+        self.speed(0)
+
 #Create levels list - because we need to give the pen a place to go. Created a LIST called levels. 
 levels = ['']
 
@@ -75,6 +84,7 @@ setup_maze(levels[1])
 while True:
     #pass
     wn.update()
+
 
 
 
