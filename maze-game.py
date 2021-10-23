@@ -1,17 +1,21 @@
 #Part 1: Setting up the Maze
 import turtle
 import math
+import random
 #create a window, turtle module, screen method
 wn = turtle.Screen()
-wn.bgcolor('black')
+wn.bgcolor('white')
 wn.title('A Maze Game')
 wn.setup(700, 700)
+wn.tracer(0)
+
 
 #Register shapes
-turtle.register_shape('ninja_right.gif')
-turtle.register_shape('ninja_left.gif')
-turtle.register_shape('tree_one.gif')
-turtle.register_shape('coin.gif')
+images = ['ninja_right.gif', 'ninja_left.gif', 'tree_one.gif', 'coin.gif', 'enemy_ninja_left.gif', 'enemy_ninja_right.gif']
+
+for image in images:
+    turtle.register_shape(image)
+
 
 #Create Pen - a class defines an object. Object called pen is a child of the turtle modules Turtle class. Pen is a turtle. Class is not an object, a class defines an object. Whenever you use a class, you have to initialize it with __init__. Pen is a child of turtle class, so we have to initialize that class. .speed relates to animation speed (0 is the fastest). All turtles start their life at the center of the screen (0,0)
 class Pen(turtle.Turtle):
@@ -66,7 +70,47 @@ class Player(turtle.Turtle): #the player is a child of the turtle modules turtle
             return True
         else:
             return False
+
+#Enemy Class
+class Enemy(turtle.Turtle):
+    def __init__(self, x, y):
+        turtle.Turtle.__init__(self)
+        self.shape('enemy_ninja_left.gif')
+        self.color('red')
+        self.penup()
+        self.speed(0)
+        self.gold = 25
+        self.goto(x,y)
+        self.direction = random.choice(['up', 'down', 'left', 'right'])
         
+    def move(self):
+        if self.direction == 'up':
+            dx = 0
+            dy = 24
+        elif self.direction == 'down':
+            dx = 0
+            dy = - 24
+        elif self.direction == 'left':
+            dx = -24
+            dy = 0
+            self.shape('enemy_ninja_left.gif')
+        elif self.direction == 'right':
+            dx = 24
+            dy = 0
+            self.shape('enemy_ninja_right.gif')
+#Calculate enemy spot to move to
+        move_to_x = self.xcor() + dx
+        move_to_y = self.ycor() + dy
+#Check if the space has a wall
+        if (move_to_x, move_to_y) not in walls:
+            self.goto(move_to_x, move_to_y)
+        else:
+            self.direction = random.choice(['up', 'down', 'left', 'right'])
+#Set time to move next time
+        turtle.ontimer(self.move, t=random.randint(100, 300))#milliseconds
+
+
+
 #Create Treasure class
 class Treasure(turtle.Turtle): #the player is a child of the turtle modules turtle class
     def __init__(self, x, y):
@@ -95,13 +139,13 @@ level_1 = [
 "XXXXXX  XX  XXX        XX",
 "XXXXXX  XX  XXXXXX  XXXXX",
 "XXXXXX  XX    XXXX  XXXXX",
-"X TXXX        XXXX TXXXXX",
+"X  XXX        XXXX  XXXXX",
 "X  XXX  XXXXXXXXXXXXXXXXX",
 "X         XXXXXXXXXXXXXXX",
-"X                XXXXXXXX", 
+"X    E           XXXXXXXX", 
 "XXXXXXXXXXX      XXXXX TX",
 "XXXXXXXXXXXXXX   XXXXX  X",
-"XXX TXXXXXXXXX          X",
+"XXX  XXXXXXXXX          X",
 "XXX                     X",
 "XXX            XXXXXXXXXX",
 "XXXXXXXXXXX    XXXXXXXXXX",
@@ -109,13 +153,17 @@ level_1 = [
 "XX    XXXXX             X",
 "XX    XXXXXXXXXXX   XXXXX",
 "XX     XXXXXXXXXX   XXXXX",
-"XXT         XXXX        X",
+"XXT         XXXXE       X",
 "XXXX                    X",
 "XXXXXXXXXXXXXXXXXXXXXXXXX"
 ]
 
 #Add a treasures list #to collect treasures into the list over time#
 treasures = []
+
+#Add enemies list
+enemies = []
+
 
 #Append (add) maze to mazes list
 levels.append(level_1)
@@ -144,6 +192,9 @@ def setup_maze(level):
             #Check if it is a T (representing the treasure)
             if character == "T":
                 treasures.append(Treasure(screen_x, screen_y)) #x and y coordinates in Treasure class
+            #Check if it is an E (representing enemy)
+            if character == "E":
+                enemies.append(Enemy(screen_x, screen_y))
                 
 #Create class instances 
 pen = Pen()
@@ -167,6 +218,10 @@ turtle.onkey(player.go_down, "Down")
 #Turn off screen update
 wn.tracer(0) #stops the animation for while loop
 
+#Start moving enemies
+for enemy in enemies:
+    turtle.ontimer(enemy.move, t=250)
+
 #Main Game Loop
 while True:
     #check for player collision with treasure
@@ -180,10 +235,20 @@ while True:
             treasure.destroy()
             #remove the treasure from the treasures list
             treasures.remove(treasure)
+
+#Iterate through an enemy list to see if a player collides with enemy
+    # for enemy in enemies:
+    #     if player.is_collision(enemy):
+    #         print('Player dies!')
     
     #Update Screen
     wn.update() #update window after the loop
     
+
+
+
+
+
 
 
 
