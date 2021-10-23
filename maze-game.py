@@ -1,10 +1,17 @@
 #Part 1: Setting up the Maze
 import turtle
+import math
 #create a window, turtle module, screen method
 wn = turtle.Screen()
 wn.bgcolor('black')
 wn.title('A Maze Game')
 wn.setup(700, 700)
+
+#Register shapes
+turtle.register_shape('ninja_right.gif')
+turtle.register_shape('ninja_left.gif')
+turtle.register_shape('tree_one.gif')
+turtle.register_shape('coin.gif')
 
 #Create Pen - a class defines an object. Object called pen is a child of the turtle modules Turtle class. Pen is a turtle. Class is not an object, a class defines an object. Whenever you use a class, you have to initialize it with __init__. Pen is a child of turtle class, so we have to initialize that class. .speed relates to animation speed (0 is the fastest). All turtles start their life at the center of the screen (0,0)
 class Pen(turtle.Turtle):
@@ -19,7 +26,7 @@ class Pen(turtle.Turtle):
 class Player(turtle.Turtle): #the player is a child of the turtle modules turtle class
     def __init__(self):
         turtle.Turtle.__init__(self)
-        self.shape('square')
+        self.shape('ninja_right.gif')
         self.color('blue')
         self.penup()
         self.speed(0)
@@ -43,24 +50,35 @@ class Player(turtle.Turtle): #the player is a child of the turtle modules turtle
         move_to_y = player.ycor()
         if (move_to_x, move_to_y) not in walls:
             self.goto(move_to_x, move_to_y)
+        self.shape('ninja_left.gif')        
     def go_right(self): 
         move_to_x = player.xcor() + 24
         move_to_y = player.ycor()
         if (move_to_x, move_to_y) not in walls:
             self.goto(move_to_x, move_to_y)
+        self.shape('ninja_right.gif')
+    def is_collision(self, other):
+        a = self.xcor() - other.xcor()
+        b = self.ycor() - other.ycor()
+        distance = math.sqrt((a**2) + (b**2)) #pythagorean theorem
+    
+        if distance < 5:
+            return True
+        else:
+            return False
         
 #Create Treasure class
 class Treasure(turtle.Turtle): #the player is a child of the turtle modules turtle class
     def __init__(self, x, y):
         turtle.Turtle.__init__(self)
-        self.shape('circle')
+        self.shape('coin.gif')
         self.color('gold')
         self.penup()
         self.speed(0)
         self.gold = 100
         self.goto(x,y)
 
-    def destroy(self)
+    def destroy(self):
         self.goto(2000, 2000)
         self.hideturtle()
         
@@ -77,13 +95,13 @@ level_1 = [
 "XXXXXX  XX  XXX        XX",
 "XXXXXX  XX  XXXXXX  XXXXX",
 "XXXXXX  XX    XXXX  XXXXX",
-"X  XXX        XXXX  XXXXX",
+"X TXXX        XXXX TXXXXX",
 "X  XXX  XXXXXXXXXXXXXXXXX",
 "X         XXXXXXXXXXXXXXX",
 "X                XXXXXXXX", 
-"XXXXXXXXXXX      XXXXX  X",
+"XXXXXXXXXXX      XXXXX TX",
 "XXXXXXXXXXXXXX   XXXXX  X",
-"XXX  XXXXXXXXX          X",
+"XXX TXXXXXXXXX          X",
 "XXX                     X",
 "XXX            XXXXXXXXXX",
 "XXXXXXXXXXX    XXXXXXXXXX",
@@ -116,6 +134,7 @@ def setup_maze(level):
             #Check if it is an X (representing a wall)
             if character == "X":
                 pen.goto(screen_x, screen_y) #x, y, coordinates on the screen
+                pen.shape('tree_one.gif')
                 pen.stamp() #stamp the screen with a block/wall
                 #Add coordinates to the wall list
                 walls.append((screen_x, screen_y)) #double parenthesis is a tuple, append all coordinates (x and y) of every block in the walls
@@ -124,7 +143,7 @@ def setup_maze(level):
                 player.goto(screen_x, screen_y)
             #Check if it is a T (representing the treasure)
             if character == "T":
-                player.goto(screen_x, screen_y) #x and y coordinates in Treasure class
+                treasures.append(Treasure(screen_x, screen_y)) #x and y coordinates in Treasure class
                 
 #Create class instances 
 pen = Pen()
@@ -146,11 +165,27 @@ turtle.onkey(player.go_up, "Up")
 turtle.onkey(player.go_down, "Down")
 
 #Turn off screen update
-wn.tracer(0)
+wn.tracer(0) #stops the animation for while loop
 
 #Main Game Loop
 while True:
-    #pass
-    wn.update()
+    #check for player collision with treasure
+    #iterate through treasure list
+    for treasure in treasures:
+        if player.is_collision(treasure):
+            #add the treasure gold to the player gold
+            player.gold += treasure.gold
+            print("Player Gold: {}".format(player.gold))
+            #Destroy the treasure
+            treasure.destroy()
+            #remove the treasure from the treasures list
+            treasures.remove(treasure)
+    
+    #Update Screen
+    wn.update() #update window after the loop
+    
+
+
+
 
 
